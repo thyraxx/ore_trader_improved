@@ -1,0 +1,87 @@
+<gui>
+	<sprites>
+%include "gui/playermenu/charheader_sprites.inc"
+%include "gui/closebutton_sprites.inc"
+%include "gui/scalablebutton_sprites.inc"
+%include "gui/scalablebutton_big_sprites.inc"
+%include "gui/main_menu/checkbox_sprites.inc"
+	</sprites>
+
+	<doc>
+		<group>
+			<rect width="218" height="115" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval" flow="vbox">
+				<!-- Header -->
+				<rect width="214" height="18" offset="2 2" flow="hbox">
+					<rect width="193" height="18" spriteset="gui/variable/headline_hor.sval">
+						<text font="gui/fonts/arial11_bold.fnt" text=".shop.oretrader" anchor="0.5 0.5" />
+					</rect>
+					<rect width="3" height="18" spriteset="gui/variable/3pxbar_vert.sval" />
+					<spritebutton func="close" spriteset="close" />
+				</rect>
+
+				<!-- Separator -->
+				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
+				<rect width="214" offset="2 0" height="18" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
+					<checkboxgroup id="tabs-container">
+						<clip id="tabs-clip" width="214" offset="0 0" height="18" flow="hbox">
+							<scalebutton id="choice-buy" spriteset="scalebutton" width="107" font="gui/fonts/arial11.fnt" value="buy" func="buy" text="Buy" />
+							<scalebutton id="choice-sell" spriteset="scalebutton" width="107" font="gui/fonts/arial11.fnt" value="sell" func="sell" text="Sell" />
+						</clip>
+					</checkboxgroup>
+					<!-- <scalebutton id="choice-buy" spriteset="scalebutton" width="107" font="gui/fonts/arial11.fnt" text="Buy" func="choice-buy" /> -->
+					<!-- <scalebutton id="choice-sell" spriteset="scalebutton" width="107" offset="107" font="gui/fonts/arial11.fnt" text="Sell" func="choice-sell" />		 -->
+				</rect>
+
+				<!-- Separator -->
+				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
+				<!-- NG+ -->
+				<rect width="214" height="28" offset="2 0" flow="hbox">
+					<!-- Separator -->
+					<rect width="3" height="28" spriteset="gui/variable/3pxbar_vert.sval" />
+
+					<!-- Left button -->
+					<spritebutton id="ngp-left" func="ngp-prev" spriteset="arrow-left" />
+
+					<!-- Frame -->
+					<sprite src="big-frame">
+						<text id="ngp" font="gui/fonts/arial11.fnt" anchor="0.5 0.5" color="#FFC400FF" />
+						<knobslider width="100%" height="100%" func-increase="ngp-next" func-decrease="ngp-prev" />
+					</sprite>
+
+					<!-- Right button -->
+					<spritebutton id="ngp-right" func="ngp-next" spriteset="arrow-right" />
+
+					<!-- Separator -->
+					<rect width="3" height="28" spriteset="gui/variable/3pxbar_vert.sval" />
+
+					<!-- Description -->
+					<rect width="156" height="28" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
+						<scalebutton id="buyorsell" spriteset="scalebutton" width="156" font="gui/fonts/arial11.fnt" value="amount" text="Buy" func="buy-amount" />
+					</rect>
+				</rect>
+
+				<!-- Separator -->
+				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
+				<rect width="214" height="18" offset="2 0">
+					<scalebutton id="buy-max" spriteset="scalebutton" width="214" font="gui/fonts/arial11.fnt" text="Buy max amount" func="buy-max-amount" />
+				</rect>
+
+				<!-- Separator -->
+				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
+				<!-- Close button container -->
+				<rect width="214" height="18" flow="hbox" offset="2 0">
+					<rect width="56" height="18" spriteset="gui/variable/headline_hor.sval" />
+
+					<!-- Close button -->
+					<scalebutton spriteset="scalebutton" width="102" font="gui/fonts/arial11.fnt" text=".menu.close" func="close" />
+
+					<rect width="56" height="18" spriteset="gui/variable/headline_hor.sval" />
+				</rect>
+			</rect>
+		</group>
+	</doc>
+</gui>
