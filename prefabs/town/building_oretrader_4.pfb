@@ -70,7 +70,6 @@
 			<bool>f</bool>
 			<dict>
 				<bool name="MakeRoot">t</bool>
-				<!-- <string name="Class">DungeonSettingsMenu</string> -->
 				<string name="Class">OreTraderImproved</string>
 				<string name="Filename">gui/town/dungeonsettings_edited.gui</string>
 				<array name="#ForPlayer"><int>6</int><string>User</string></array>

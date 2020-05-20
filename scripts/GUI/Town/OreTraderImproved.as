@@ -13,6 +13,13 @@ class OreTraderImproved : ScriptWidgetHost
 
     int m_lastNgp = -1;
 
+    int buyOreCost;
+    int sellOreCost;
+
+    int shopLevel;
+
+    Upgrades::UpgradeShop@ m_shop;
+
     OreTraderImproved(SValue& sval)
     {
         super();
@@ -20,6 +27,7 @@ class OreTraderImproved : ScriptWidgetHost
 
     void Initialize(bool loaded) override
     {
+        GetShopLevel();
         @m_wNgp = cast<TextWidget>(m_widget.GetWidgetById("ngp"));
         @m_wNgpButtonAmount = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buyorsell"));
         @m_wNgpButtonMax = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buy-max"));
@@ -33,6 +41,54 @@ class OreTraderImproved : ScriptWidgetHost
         UpdateNgp();
     }
 
+    void GetShopLevel(){
+        auto record = GetLocalPlayerRecord();
+        @m_shop = cast<Upgrades::UpgradeShop>(Upgrades::GetShop("townhall"));
+        
+        for(uint i = 0; i < m_shop.m_upgrades.length(); i++)
+        {
+            // Debugging purposes
+            //print(m_shop.m_upgrades[i].m_id + " : " + (m_shop.m_upgrades[i].m_id == "oretrader"));
+            
+            // Finding the oretrader and returning the highest upgraded level
+            if(m_shop.m_upgrades[i].m_id == "oretrader"){
+                for(uint k = 0; k < m_shop.m_upgrades[i].m_steps.length(); k++){
+                    if(m_shop.m_upgrades[i].m_steps[k].IsOwned(record)){
+                        shopLevel = m_shop.m_upgrades[i].m_steps[k].m_level;
+                    }
+                    // Debugging purposes
+                    //print(m_shop.m_upgrades[i].m_steps[k].m_level + " : " + m_shop.m_upgrades[i].m_steps[k].IsOwned(record));
+                }
+                break;
+            }
+            
+        }
+    }
+
+    // TODO: Lookup shoplevel and return ore price
+    // returns error, doens't work for now
+    void SetCostPerOre(int shopLevel){
+        switch(shopLevel)
+        {
+            case 1:
+                buyOreCost = 1500;
+                sellOreCost = 200;
+                break;
+            case 2:
+                buyOreCost = 1250;
+                sellOreCost = 350;
+                break;
+            case 3:
+                buyOreCost = 1000;
+                sellOreCost = 500;
+                break;
+            case 4:
+                buyOreCost = 800;
+                sellOreCost = 700;
+                break;
+        }
+    }
+
     float getOreAmount()
     {
         return m_oreAmount;
@@ -42,7 +98,7 @@ class OreTraderImproved : ScriptWidgetHost
     {
         auto gm = cast<Campaign>(g_gameMode);
         if(m_wNgpButtonChoiceBuy.IsChecked()){
-            return (gm.m_townLocal.m_gold / 800);
+            return (gm.m_townLocal.m_gold / buyOreCost);
         }else{
             return gm.m_townLocal.m_ore;
         }
@@ -88,6 +144,8 @@ class OreTraderImproved : ScriptWidgetHost
                 m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
                 m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
                 m_wNgpButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
+                // TODO:
+                //m_wNgpButtonMax.Remove();
             }
 
         m_wNgpButtonMax.m_enabled = (m_wNgpButtonChoiceBuy.IsChecked() && GetHighestAmountOre() > 0);
@@ -121,6 +179,7 @@ class OreTraderImproved : ScriptWidgetHost
         ScriptWidgetHost::Update(dt);
     }
 
+    // TODO: Why does it look like some monstrosity, maybe change?
     void OnFunc(Widget@ sender, string name) override
     {
         bool choiceBuy = (m_wNgpButtonChoiceBuy.IsChecked());
