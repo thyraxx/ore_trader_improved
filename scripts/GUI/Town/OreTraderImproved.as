@@ -9,6 +9,7 @@ class OreTraderImproved : ScriptWidgetHost
 
     MenuTabSystem@ m_tabSystem;
 
+    // TODO: better naming convention
     float m_oreAmount = 0;
 
     int m_lastNgp = -1;
@@ -28,6 +29,8 @@ class OreTraderImproved : ScriptWidgetHost
     void Initialize(bool loaded) override
     {
         GetShopLevel();
+        SetCostPerOre(shopLevel);
+
         @m_wNgp = cast<TextWidget>(m_widget.GetWidgetById("ngp"));
         @m_wNgpButtonAmount = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buyorsell"));
         @m_wNgpButtonMax = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buy-max"));
@@ -51,12 +54,13 @@ class OreTraderImproved : ScriptWidgetHost
             //print(m_shop.m_upgrades[i].m_id + " : " + (m_shop.m_upgrades[i].m_id == "oretrader"));
             
             // Finding the oretrader and returning the highest upgraded level
+            // not the best solution? But works for now
             if(m_shop.m_upgrades[i].m_id == "oretrader"){
                 for(uint k = 0; k < m_shop.m_upgrades[i].m_steps.length(); k++){
                     if(m_shop.m_upgrades[i].m_steps[k].IsOwned(record)){
                         shopLevel = m_shop.m_upgrades[i].m_steps[k].m_level;
                     }
-                    // Debugging purposes
+                    //Debugging purposes
                     //print(m_shop.m_upgrades[i].m_steps[k].m_level + " : " + m_shop.m_upgrades[i].m_steps[k].IsOwned(record));
                 }
                 break;
@@ -65,8 +69,8 @@ class OreTraderImproved : ScriptWidgetHost
         }
     }
 
-    // TODO: Lookup shoplevel and return ore price
-    // returns error, doens't work for now
+    // TODO: Lookup shoplevel and set ore price, 
+    // maybe use vec2/array to return it in 1 variable instead?
     void SetCostPerOre(int shopLevel){
         switch(shopLevel)
         {
@@ -125,7 +129,7 @@ class OreTraderImproved : ScriptWidgetHost
                 SetNgp(m_oreAmount);
             }
 
-            m_wNgp.SetText("+" + int(m_oreAmount));
+            m_wNgp.SetText(int(m_oreAmount));
             m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
             m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
             m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
@@ -140,11 +144,13 @@ class OreTraderImproved : ScriptWidgetHost
                     SetNgp(m_oreAmount);
                 }
 
-                m_wNgp.SetText("-" + int(m_oreAmount));
+                m_wNgp.SetText(int(m_oreAmount));
                 m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
                 m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
                 m_wNgpButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
-                // TODO:
+                
+                // TODO: Change ui so there isn't a empty area
+                // after removing the button
                 //m_wNgpButtonMax.Remove();
             }
 
@@ -179,7 +185,7 @@ class OreTraderImproved : ScriptWidgetHost
         ScriptWidgetHost::Update(dt);
     }
 
-    // TODO: Why does it look like some monstrosity, maybe change?
+    // TODO: cleanup buy-amount
     void OnFunc(Widget@ sender, string name) override
     {
         bool choiceBuy = (m_wNgpButtonChoiceBuy.IsChecked());
@@ -236,14 +242,14 @@ class OreTraderImproved : ScriptWidgetHost
         else if (name == "buy-amount"){
             auto gm = cast<Campaign>(g_gameMode);
             if(choiceBuy){
-                if((m_oreAmount*800) <= gm.m_townLocal.m_gold){ 
+                if((m_oreAmount * buyOreCost) <= gm.m_townLocal.m_gold){ 
                     gm.m_townLocal.m_ore += m_oreAmount;
-                    gm.m_townLocal.m_gold -= (m_oreAmount*800);
+                    gm.m_townLocal.m_gold -= (m_oreAmount * buyOreCost);
                 }
             }else{
                 if(m_oreAmount <= gm.m_townLocal.m_ore){ 
                     gm.m_townLocal.m_ore -= m_oreAmount;
-                    gm.m_townLocal.m_gold += (m_oreAmount*800);
+                    gm.m_townLocal.m_gold += (m_oreAmount * sellOreCost);
                 }
             }
 
@@ -253,7 +259,7 @@ class OreTraderImproved : ScriptWidgetHost
         {
             auto gm = cast<Campaign>(g_gameMode);
             gm.m_townLocal.m_ore += GetHighestAmountOre();
-            gm.m_townLocal.m_gold -= (GetHighestAmountOre()*800);
+            gm.m_townLocal.m_gold -= (GetHighestAmountOre() * buyOreCost);
             UpdateNgp();
         }
         else
