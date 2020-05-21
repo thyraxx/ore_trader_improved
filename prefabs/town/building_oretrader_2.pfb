@@ -71,7 +71,7 @@
 			<dict>
 				<bool name="MakeRoot">t</bool>
 				<string name="Class">OreTraderImproved</string>
-				<string name="Filename">gui/town/dungeonsettings_edited.gui</string>
+				<string name="Filename">gui/town/ore_trader_improved.gui</string>
 				<array name="#ForPlayer"><int>6</int><string>User</string></array>
 			</dict>
 		</array>
