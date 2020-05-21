@@ -9,7 +9,7 @@
 
 	<doc>
 		<group>
-			<rect width="218" height="115" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval" flow="vbox">
+			<rect width="218" height="135" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval" flow="vbox">
 				<!-- Header -->
 				<rect width="214" height="18" offset="2 2" flow="hbox">
 					<rect width="193" height="18" spriteset="gui/variable/headline_hor.sval">
@@ -35,6 +35,11 @@
 
 				<!-- Separator -->
 				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
+				<rect width="214" height="20" offset="2 0" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
+					<text font="gui/fonts/arial11.fnt" anchor="0.03 0" offset="0 2" text="Price each ore:" />
+					<text id="oreprice" font="gui/fonts/arial11.fnt" anchor="0.43 0" offset="0 2" text="XX" />
+				</rect>
 
 				<!-- NG+ -->
 				<rect width="214" height="28" offset="2 0" flow="hbox">
