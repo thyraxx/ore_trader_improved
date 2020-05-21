@@ -1,6 +1,7 @@
 class OreTraderImproved : ScriptWidgetHost
 {
     TextWidget@ m_wNgp;
+    TextWidget@ m_orePrice;
     SpriteButtonWidget@ m_wNgpLeft;
     SpriteButtonWidget@ m_wNgpRight;
     ScalableSpriteButtonWidget@ m_wNgpButtonAmount;
@@ -32,9 +33,13 @@ class OreTraderImproved : ScriptWidgetHost
         SetCostPerOre(shopLevel);
 
         @m_wNgp = cast<TextWidget>(m_widget.GetWidgetById("ngp"));
+        @m_orePrice = cast<TextWidget>(m_widget.GetWidgetById("oreprice"));
+
         @m_wNgpButtonAmount = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buyorsell"));
         @m_wNgpButtonMax = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buy-max"));
         @m_wNgpButtonChoiceBuy = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("choice-buy"));
+        @m_wNgpButtonChoiceBuy = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("choice-buy"));
+
         m_wNgpButtonChoiceBuy.SetChecked(true);
 
 
@@ -129,12 +134,15 @@ class OreTraderImproved : ScriptWidgetHost
                 SetNgp(m_oreAmount);
             }
 
+            m_orePrice.SetText(buyOreCost);
             m_wNgp.SetText(int(m_oreAmount));
             m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
             m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
             m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
             
             }else{
+                m_orePrice.SetText(sellOreCost);
+
                 float m_oreAmount =  getOreAmount();
                 int highestAmountOre = gm.m_townLocal.m_ore;
 
