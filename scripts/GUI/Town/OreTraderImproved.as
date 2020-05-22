@@ -105,11 +105,22 @@ class OreTraderImproved : ScriptWidgetHost
 
     int GetHighestAmountOre()
     {
+        auto record = GetLocalPlayerRecord();
         auto gm = cast<Campaign>(g_gameMode);
-        if(m_wNgpButtonChoiceBuy.IsChecked()){
-            return (gm.m_townLocal.m_gold / buyOreCost);
+        if(!record.mercenary){
+            if(m_wNgpButtonChoiceBuy.IsChecked())
+            {
+                return (gm.m_townLocal.m_gold / buyOreCost);
+            }else{
+                return gm.m_townLocal.m_ore;
+            }
         }else{
-            return gm.m_townLocal.m_ore;
+            if(m_wNgpButtonChoiceBuy.IsChecked())
+            {
+                return (record.mercenaryGold / buyOreCost);
+            }else{
+                return record.mercenaryOre;
+            }
         }
     }
 
@@ -120,26 +131,28 @@ class OreTraderImproved : ScriptWidgetHost
 
     void UpdateNgp()
     {
-        auto gm = cast<Campaign>(g_gameMode);
+        auto record = GetLocalPlayerRecord();
+        
+        if(!record.mercenary){
+            // non merc
+            auto gm = cast<Campaign>(g_gameMode);
 
-        if(m_wNgpButtonChoiceBuy.IsChecked())
-        {
-            
-            float m_oreAmount = getOreAmount();
-            int highestAmountOre = GetHighestAmountOre();
+            if(m_wNgpButtonChoiceBuy.IsChecked()){
+                
+                float m_oreAmount = getOreAmount();
+                int highestAmountOre = GetHighestAmountOre();
 
-            if (m_oreAmount > highestAmountOre)
-            {
-                m_oreAmount = highestAmountOre;
-                SetNgp(m_oreAmount);
-            }
+                if (m_oreAmount > highestAmountOre){
+                    m_oreAmount = highestAmountOre;
+                    SetNgp(m_oreAmount);
+                }
 
-            m_orePrice.SetText(buyOreCost);
-            m_wNgp.SetText(int(m_oreAmount));
-            m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
-            m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
-            m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
-            
+                m_orePrice.SetText(buyOreCost);
+                m_wNgp.SetText(int(m_oreAmount));
+                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
+                
             }else{
                 m_orePrice.SetText(sellOreCost);
 
@@ -161,6 +174,46 @@ class OreTraderImproved : ScriptWidgetHost
                 // after removing the button
                 //m_wNgpButtonMax.Remove();
             }
+        }else{
+            // merc mode
+            if(m_wNgpButtonChoiceBuy.IsChecked()){
+            
+                float m_oreAmount = getOreAmount();
+                int highestAmountOre = GetHighestAmountOre();
+
+                if (m_oreAmount > highestAmountOre){
+                    m_oreAmount = highestAmountOre;
+                    SetNgp(m_oreAmount);
+                }
+
+                m_orePrice.SetText(buyOreCost);
+                m_wNgp.SetText(int(m_oreAmount));
+                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
+                
+            }else{
+                m_orePrice.SetText(sellOreCost);
+
+                float m_oreAmount =  getOreAmount();
+                int highestAmountOre = record.mercenaryOre;
+
+                if (m_oreAmount > highestAmountOre){
+                    m_oreAmount = highestAmountOre;
+                    SetNgp(m_oreAmount);
+                }
+
+                m_wNgp.SetText(int(m_oreAmount));
+                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wNgpButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
+                
+                // TODO: Change ui so there isn't a empty area
+                // after removing the button
+                //m_wNgpButtonMax.Remove();
+            }
+        }
+        
 
         m_wNgpButtonMax.m_enabled = (m_wNgpButtonChoiceBuy.IsChecked() && GetHighestAmountOre() > 0);
         DoLayout();
@@ -183,9 +236,8 @@ class OreTraderImproved : ScriptWidgetHost
             auto gm = cast<Campaign>(g_gameMode);
 
             float ngp = gm.m_townLocal.m_ore;
-            if (m_lastNgp != int(ngp))
-            {
-                m_lastNgp = int(ngp);
+            if (m_lastNgp != int(GetHighestAmountOre())){
+                m_lastNgp = int(GetHighestAmountOre());
             }
         }
 
@@ -193,9 +245,10 @@ class OreTraderImproved : ScriptWidgetHost
         ScriptWidgetHost::Update(dt);
     }
 
-    // TODO: cleanup buy-amount
+    // TODO: cleanup
     void OnFunc(Widget@ sender, string name) override
     {
+        auto record = GetLocalPlayerRecord();
         bool choiceBuy = (m_wNgpButtonChoiceBuy.IsChecked());
         if (name == "close")
             Stop();
@@ -222,6 +275,7 @@ class OreTraderImproved : ScriptWidgetHost
         }
         else if (name == "ngp-next")
         {
+            // non merc
             if(choiceBuy){
                 float ngp = getOreAmount();
 
@@ -239,7 +293,7 @@ class OreTraderImproved : ScriptWidgetHost
 
                 ngp = int(ngp) + 1;
 
-                int highestNgp = gm.m_townLocal.m_ore;
+                int highestNgp = GetHighestAmountOre();
                 if (int(ngp) > highestNgp)
                     ngp = int(highestNgp);
 
@@ -248,16 +302,33 @@ class OreTraderImproved : ScriptWidgetHost
             }
         }
         else if (name == "buy-amount"){
-            auto gm = cast<Campaign>(g_gameMode);
-            if(choiceBuy){
-                if((m_oreAmount * buyOreCost) <= gm.m_townLocal.m_gold){ 
-                    gm.m_townLocal.m_ore += m_oreAmount;
-                    gm.m_townLocal.m_gold -= (m_oreAmount * buyOreCost);
+
+            if(!record.mercenary){
+                // non merc
+                auto gm = cast<Campaign>(g_gameMode);
+                if(choiceBuy){
+                    if((m_oreAmount * buyOreCost) <= gm.m_townLocal.m_gold){ 
+                        gm.m_townLocal.m_ore += m_oreAmount;
+                        gm.m_townLocal.m_gold -= (m_oreAmount * buyOreCost);
+                    }
+                }else{
+                    if(m_oreAmount <= gm.m_townLocal.m_ore){ 
+                        gm.m_townLocal.m_ore -= m_oreAmount;
+                        gm.m_townLocal.m_gold += (m_oreAmount * sellOreCost);
+                    }
                 }
             }else{
-                if(m_oreAmount <= gm.m_townLocal.m_ore){ 
-                    gm.m_townLocal.m_ore -= m_oreAmount;
-                    gm.m_townLocal.m_gold += (m_oreAmount * sellOreCost);
+                // merc mode
+                if(choiceBuy){
+                    if((m_oreAmount * buyOreCost) <= record.mercenaryGold){ 
+                        record.mercenaryOre += m_oreAmount;
+                        record.mercenaryGold -= (m_oreAmount * buyOreCost);
+                    }
+                }else{
+                    if(m_oreAmount <= record.mercenaryOre){ 
+                        record.mercenaryOre -= m_oreAmount;
+                        record.mercenaryGold += (m_oreAmount * sellOreCost);
+                    }
                 }
             }
 
@@ -265,12 +336,22 @@ class OreTraderImproved : ScriptWidgetHost
         }
         else if (name == "buy-max-amount")
         {
-            auto gm = cast<Campaign>(g_gameMode);
-            gm.m_townLocal.m_ore += GetHighestAmountOre();
-            gm.m_townLocal.m_gold -= (GetHighestAmountOre() * buyOreCost);
-            UpdateNgp();
+            //auto record = GetLocalPlayerRecord();
+            if(!record.mercenary){
+                // non merc
+                auto gm = cast<Campaign>(g_gameMode);
+                gm.m_townLocal.m_ore += GetHighestAmountOre();
+                gm.m_townLocal.m_gold -= (GetHighestAmountOre() * buyOreCost);
+                UpdateNgp();
+            }else{
+                // merc mode
+                record.mercenaryOre += GetHighestAmountOre();
+                record.mercenaryGold -= (GetHighestAmountOre() * buyOreCost);
+                UpdateNgp();
+            }
         }
         else
             ScriptWidgetHost::OnFunc(sender, name);
+
     }
 }
