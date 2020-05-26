@@ -5,6 +5,7 @@
 %include "gui/scalablebutton_sprites.inc"
 %include "gui/scalablebutton_big_sprites.inc"
 %include "gui/main_menu/checkbox_sprites.inc"
+%include "gui/thyraxx_scalablebutton_sprites.inc"
 	</sprites>
 
 	<doc>
@@ -66,7 +67,7 @@
 
 					<!-- Description -->
 					<rect width="156" height="28" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
-						<scalebutton id="buyorsell" spriteset="scalebutton" width="156" font="gui/fonts/arial11.fnt" value="amount" text="Buy" func="buy-amount" />
+						<scalebutton id="buyorsell" spriteset="thyraxx-scalebutton" width="156" font="gui/fonts/arial11.fnt" value="amount" text="Buy" func="buy-amount" />
 					</rect>
 				</rect>
 
