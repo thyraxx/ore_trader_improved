@@ -1,5 +1,4 @@
-stages:
-  - build
-
-before_script:
-  echo "test"
+build1:
+  stage: build
+  script:
+    - echo "Do your build here"
