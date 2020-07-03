@@ -42,6 +42,9 @@
 					<text id="oreprice" font="gui/fonts/arial11.fnt" anchor="0.43 0" offset="0 2" text="XX" />
 				</rect>
 
+				<!-- Separator -->
+				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
 				<!-- NG+ -->
 				<rect width="214" height="28" offset="2 0" flow="hbox">
 					<!-- Separator -->
