@@ -1,4 +1,4 @@
 build1:
   stage: build
   script:
-    - echo "Do your build here"
+    - cat prefabs/town/building_oretrader_1.pfb
