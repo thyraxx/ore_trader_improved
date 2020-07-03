@@ -1,19 +1,19 @@
 class OreTraderImproved : ScriptWidgetHost
 {
-    TextWidget@ m_wNgp;
+    TextWidget@ m_wOre;
     TextWidget@ m_orePrice;
-    SpriteButtonWidget@ m_wNgpLeft;
-    SpriteButtonWidget@ m_wNgpRight;
-    ScalableSpriteButtonWidget@ m_wNgpButtonAmount;
-    ScalableSpriteButtonWidget@ m_wNgpButtonMax;
-    ScalableSpriteButtonWidget@ m_wNgpButtonChoiceBuy;
+    SpriteButtonWidget@ m_wOreLeft;
+    SpriteButtonWidget@ m_wOreRight;
+    ScalableSpriteButtonWidget@ m_wOreButtonAmount;
+    ScalableSpriteButtonWidget@ m_wOreButtonMax;
+    ScalableSpriteButtonWidget@ m_wOreButtonChoiceBuy;
 
     MenuTabSystem@ m_tabSystem;
 
     // TODO: better naming convention
-    float m_oreAmount = 0;
+    int m_oreAmount = 0;
 
-    int m_lastNgp = -1;
+    int m_lastOre = -1;
 
     int buyOreCost;
     int sellOreCost;
@@ -32,21 +32,21 @@ class OreTraderImproved : ScriptWidgetHost
         GetShopLevel();
         SetCostPerOre(shopLevel);
 
-        @m_wNgp = cast<TextWidget>(m_widget.GetWidgetById("ngp"));
+        @m_wOre = cast<TextWidget>(m_widget.GetWidgetById("ore"));
         @m_orePrice = cast<TextWidget>(m_widget.GetWidgetById("oreprice"));
 
-        @m_wNgpButtonAmount = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buyorsell"));
-        @m_wNgpButtonMax = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buy-max"));
-        @m_wNgpButtonChoiceBuy = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("choice-buy"));
-        @m_wNgpButtonChoiceBuy = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("choice-buy"));
+        @m_wOreButtonAmount = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buyorsell"));
+        @m_wOreButtonMax = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("buy-max"));
+        @m_wOreButtonChoiceBuy = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("choice-buy"));
+        @m_wOreButtonChoiceBuy = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("choice-buy"));
 
-        m_wNgpButtonChoiceBuy.SetChecked(true);
+        m_wOreButtonChoiceBuy.SetChecked(true);
 
 
-        @m_wNgpLeft = cast<SpriteButtonWidget>(m_widget.GetWidgetById("ngp-left"));
-        @m_wNgpRight = cast<SpriteButtonWidget>(m_widget.GetWidgetById("ngp-right"));
+        @m_wOreLeft = cast<SpriteButtonWidget>(m_widget.GetWidgetById("ore-left"));
+        @m_wOreRight = cast<SpriteButtonWidget>(m_widget.GetWidgetById("ore-right"));
 
-        UpdateNgp();
+        UpdateOre();
     }
 
     void GetShopLevel(){
@@ -98,7 +98,7 @@ class OreTraderImproved : ScriptWidgetHost
         }
     }
 
-    float getOreAmount()
+    int getOreAmount()
     {
         return m_oreAmount;
     }
@@ -108,14 +108,14 @@ class OreTraderImproved : ScriptWidgetHost
         auto record = GetLocalPlayerRecord();
         auto gm = cast<Campaign>(g_gameMode);
         if(!record.mercenary){
-            if(m_wNgpButtonChoiceBuy.IsChecked())
+            if(m_wOreButtonChoiceBuy.IsChecked())
             {
                 return (gm.m_townLocal.m_gold / buyOreCost);
             }else{
                 return gm.m_townLocal.m_ore;
             }
         }else{
-            if(m_wNgpButtonChoiceBuy.IsChecked())
+            if(m_wOreButtonChoiceBuy.IsChecked())
             {
                 return (record.mercenaryGold / buyOreCost);
             }else{
@@ -124,12 +124,12 @@ class OreTraderImproved : ScriptWidgetHost
         }
     }
 
-    void SetNgp(float ngp)
+    void SetOreAmount(int Ore)
     {
-        m_oreAmount = ngp;
+        m_oreAmount = Ore;
     }
 
-    void UpdateNgp()
+    void UpdateOre()
     {
         auto record = GetLocalPlayerRecord();
         
@@ -137,85 +137,85 @@ class OreTraderImproved : ScriptWidgetHost
             // non merc
             auto gm = cast<Campaign>(g_gameMode);
 
-            if(m_wNgpButtonChoiceBuy.IsChecked()){
+            if(m_wOreButtonChoiceBuy.IsChecked()){
                 
-                float m_oreAmount = getOreAmount();
+                int m_oreAmount = getOreAmount();
                 int highestAmountOre = GetHighestAmountOre();
 
                 if (m_oreAmount > highestAmountOre){
                     m_oreAmount = highestAmountOre;
-                    SetNgp(m_oreAmount);
+                    SetOreAmount(m_oreAmount);
                 }
 
                 m_orePrice.SetText(buyOreCost);
-                m_wNgp.SetText(int(m_oreAmount));
-                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
-                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
-                m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
+                m_wOre.SetText(int(m_oreAmount));
+                m_wOreLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wOreRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wOreButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
                 
             }else{
                 m_orePrice.SetText(sellOreCost);
 
-                float m_oreAmount =  getOreAmount();
+                int m_oreAmount =  getOreAmount();
                 int highestAmountOre = gm.m_townLocal.m_ore;
 
                 if (m_oreAmount > highestAmountOre)
                 {
                     m_oreAmount = highestAmountOre;
-                    SetNgp(m_oreAmount);
+                    SetOreAmount(m_oreAmount);
                 }
 
-                m_wNgp.SetText(int(m_oreAmount));
-                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
-                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
-                m_wNgpButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
+                m_wOre.SetText(int(m_oreAmount));
+                m_wOreLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wOreRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wOreButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
                 
                 // TODO: Change ui so there isn't a empty area
                 // after removing the button
-                //m_wNgpButtonMax.Remove();
+                //m_wOreButtonMax.Remove();
             }
         }else{
             // merc mode
-            if(m_wNgpButtonChoiceBuy.IsChecked()){
+            if(m_wOreButtonChoiceBuy.IsChecked()){
             
-                float m_oreAmount = getOreAmount();
+                int m_oreAmount = getOreAmount();
                 int highestAmountOre = GetHighestAmountOre();
 
                 if (m_oreAmount > highestAmountOre){
                     m_oreAmount = highestAmountOre;
-                    SetNgp(m_oreAmount);
+                    SetOreAmount(m_oreAmount);
                 }
 
                 m_orePrice.SetText(buyOreCost);
-                m_wNgp.SetText(int(m_oreAmount));
-                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
-                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
-                m_wNgpButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
+                m_wOre.SetText(int(m_oreAmount));
+                m_wOreLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wOreRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wOreButtonAmount.m_enabled = (GetHighestAmountOre() > 0 && m_oreAmount != 0);
                 
             }else{
                 m_orePrice.SetText(sellOreCost);
 
-                float m_oreAmount =  getOreAmount();
+                int m_oreAmount =  getOreAmount();
                 int highestAmountOre = record.mercenaryOre;
 
                 if (m_oreAmount > highestAmountOre){
                     m_oreAmount = highestAmountOre;
-                    SetNgp(m_oreAmount);
+                    SetOreAmount(m_oreAmount);
                 }
 
-                m_wNgp.SetText(int(m_oreAmount));
-                m_wNgpLeft.m_enabled = (int(m_oreAmount) > 0);
-                m_wNgpRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
-                m_wNgpButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
+                m_wOre.SetText(int(m_oreAmount));
+                m_wOreLeft.m_enabled = (int(m_oreAmount) > 0);
+                m_wOreRight.m_enabled = (int(m_oreAmount) < highestAmountOre);
+                m_wOreButtonAmount.m_enabled = (highestAmountOre > 0 && m_oreAmount != 0);
                 
                 // TODO: Change ui so there isn't a empty area
                 // after removing the button
-                //m_wNgpButtonMax.Remove();
+                //m_wOreButtonMax.Remove();
             }
         }
         
 
-        m_wNgpButtonMax.m_enabled = (m_wNgpButtonChoiceBuy.IsChecked() && GetHighestAmountOre() > 0);
+        m_wOreButtonMax.m_enabled = (m_wOreButtonChoiceBuy.IsChecked() && GetHighestAmountOre() > 0);
         DoLayout();
     }
 
@@ -225,23 +225,23 @@ class OreTraderImproved : ScriptWidgetHost
 
     void Update(int dt) override
     {
-        if(m_wNgpButtonChoiceBuy.IsChecked()){
-            float ngp = getOreAmount();
+        if(m_wOreButtonChoiceBuy.IsChecked()){
+            int Ore = getOreAmount();
 
-            if (m_lastNgp != int(ngp))
+            if (m_lastOre != int(Ore))
             {
-                m_lastNgp = int(ngp);
+                m_lastOre = int(Ore);
             }
         }else{
             auto gm = cast<Campaign>(g_gameMode);
 
-            float ngp = gm.m_townLocal.m_ore;
-            if (m_lastNgp != int(GetHighestAmountOre())){
-                m_lastNgp = int(GetHighestAmountOre());
+            int Ore = gm.m_townLocal.m_ore;
+            if (m_lastOre != int(GetHighestAmountOre())){
+                m_lastOre = int(GetHighestAmountOre());
             }
         }
 
-        UpdateNgp();
+        UpdateOre();
         ScriptWidgetHost::Update(dt);
     }
 
@@ -249,56 +249,56 @@ class OreTraderImproved : ScriptWidgetHost
     void OnFunc(Widget@ sender, string name) override
     {
         auto record = GetLocalPlayerRecord();
-        bool choiceBuy = (m_wNgpButtonChoiceBuy.IsChecked());
+        bool choiceBuy = (m_wOreButtonChoiceBuy.IsChecked());
         if (name == "close")
             Stop();
         else if(name == "sell"){
-            m_wNgpButtonAmount.SetText("Sell");
+            m_wOreButtonAmount.SetText("Sell");
 
-            UpdateNgp();
+            UpdateOre();
         }
         else if(name == "buy"){
-            m_wNgpButtonAmount.SetText("Buy");
-            UpdateNgp();
+            m_wOreButtonAmount.SetText("Buy");
+            UpdateOre();
         }
 
-        else if (name == "ngp-prev")
+        else if (name == "ore-prev")
         {
-            float ngp = getOreAmount();
+            int Ore = getOreAmount();
 
-            ngp = int(ngp) - 1;
-            if (ngp < 0)
-                ngp = 0;
+            Ore = int(Ore) - 1;
+            if (Ore < 0)
+                Ore = 0;
 
-            SetNgp(ngp);
-            UpdateNgp();
+            SetOreAmount(Ore);
+            UpdateOre();
         }
-        else if (name == "ngp-next")
+        else if (name == "ore-next")
         {
             // non merc
             if(choiceBuy){
-                float ngp = getOreAmount();
+                int Ore = getOreAmount();
 
-                ngp = int(ngp) + 1;
+                Ore = int(Ore) + 1;
 
-                int highestNgp = GetHighestAmountOre();
-                if (int(ngp) > highestNgp)
-                    ngp = int(highestNgp);
+                int highestOre = GetHighestAmountOre();
+                if (int(Ore) > highestOre)
+                    Ore = int(highestOre);
 
-                SetNgp(ngp);
-                UpdateNgp();
+                SetOreAmount(Ore);
+                UpdateOre();
             }else{
                 auto gm = cast<Campaign>(g_gameMode);
-                float ngp = getOreAmount();
+                int Ore = getOreAmount();
 
-                ngp = int(ngp) + 1;
+                Ore = int(Ore) + 1;
 
-                int highestNgp = GetHighestAmountOre();
-                if (int(ngp) > highestNgp)
-                    ngp = int(highestNgp);
+                int highestOre = GetHighestAmountOre();
+                if (int(Ore) > highestOre)
+                    Ore = int(highestOre);
 
-                SetNgp(ngp);
-                UpdateNgp();
+                SetOreAmount(Ore);
+                UpdateOre();
             }
         }
         else if (name == "buy-amount"){
@@ -332,7 +332,7 @@ class OreTraderImproved : ScriptWidgetHost
                 }
             }
 
-            UpdateNgp();
+            UpdateOre();
         }
         else if (name == "buy-max-amount")
         {
@@ -342,12 +342,12 @@ class OreTraderImproved : ScriptWidgetHost
                 auto gm = cast<Campaign>(g_gameMode);
                 gm.m_townLocal.m_ore += GetHighestAmountOre();
                 gm.m_townLocal.m_gold -= (GetHighestAmountOre() * buyOreCost);
-                UpdateNgp();
+                UpdateOre();
             }else{
                 // merc mode
                 record.mercenaryOre += GetHighestAmountOre();
                 record.mercenaryGold -= (GetHighestAmountOre() * buyOreCost);
-                UpdateNgp();
+                UpdateOre();
             }
         }
         else
