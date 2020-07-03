@@ -10,7 +10,7 @@
 
 	<doc>
 		<group>
-			<rect width="218" height="135" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval" flow="vbox">
+			<rect width="218" height="139" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval" flow="vbox">
 				<!-- Header -->
 				<rect width="214" height="18" offset="2 2" flow="hbox">
 					<rect width="193" height="18" spriteset="gui/variable/headline_hor.sval">
@@ -42,22 +42,25 @@
 					<text id="oreprice" font="gui/fonts/arial11.fnt" anchor="0.43 0" offset="0 2" text="XX" />
 				</rect>
 
+				<!-- Separator -->
+				<rect width="214" height="3" offset="2 0" spriteset="gui/variable/3pxbar_hor.sval" />
+
 				<!-- NG+ -->
 				<rect width="214" height="28" offset="2 0" flow="hbox">
 					<!-- Separator -->
 					<rect width="3" height="28" spriteset="gui/variable/3pxbar_vert.sval" />
 
 					<!-- Left button -->
-					<spritebutton id="ngp-left" func="ngp-prev" spriteset="arrow-left" />
+					<spritebutton id="ore-left" func="ore-prev" spriteset="arrow-left" />
 
 					<!-- Frame -->
 					<sprite src="big-frame">
-						<text id="ngp" font="gui/fonts/arial11.fnt" anchor="0.5 0.5" color="#FFC400FF" />
-						<knobslider width="100%" height="100%" func-increase="ngp-next" func-decrease="ngp-prev" />
+						<text id="ore" font="gui/fonts/arial11.fnt" anchor="0.5 0.5" color="#FFC400FF" />
+						<knobslider width="100%" height="100%" func-increase="ore-next" func-decrease="ore-prev" />
 					</sprite>
 
 					<!-- Right button -->
-					<spritebutton id="ngp-right" func="ngp-next" spriteset="arrow-right" />
+					<spritebutton id="ore-right" func="ore-next" spriteset="arrow-right" />
 
 					<!-- Separator -->
 					<rect width="3" height="28" spriteset="gui/variable/3pxbar_vert.sval" />
