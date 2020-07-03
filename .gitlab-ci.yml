@@ -1,0 +1,5 @@
+stages:
+  - build
+
+before_script:
+  echo "test"
