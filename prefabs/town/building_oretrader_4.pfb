@@ -4,6 +4,7 @@
 	</dict>
 	<int name="version">1</int>
 	<dict name="units">
+		<array name="doodads/generic/speech_bubble_store.unit"><vec2>0 0</vec2><int>1</int></array>
 		<array name=":Physics_Circle">
 			<array>
 				<vec2>0 0</vec2>
@@ -18,14 +19,13 @@
 				</dict>
 			</array>
 		</array>
-		<array name="doodads/generic/speech_bubble_store.unit"><vec2>0 0</vec2><int>3</int></array>
-		<array name="doodads/generic/npc_oretrader.unit"><vec2>0 0</vec2><int>1</int></array>
+		<array name="doodads/generic/npc_oretrader.unit"><vec2>0 0</vec2><int>3</int></array>
 	</dict>
 	<array name="scripts">
 		<array>
 			<string>UseTrigger</string>
 			<int>4</int>
-			<vec3>64 80 0</vec3>
+			<vec3>128 64 0</vec3>
 			<bool>t</bool>
 			<int>-1</int>
 			<bool>f</bool>
@@ -48,7 +48,7 @@
 		<array>
 			<string>OpenInterface</string>
 			<int>6</int>
-			<vec3>168 0 0</vec3>
+			<vec3>352 -48 0</vec3>
 			<bool>t</bool>
 			<int>-1</int>
 			<bool>f</bool>
@@ -56,6 +56,7 @@
 				<string name="Filename">gui/town/ore_trader_improved.gui</string>
 				<bool name="MakeRoot">t</bool>
 				<string name="Class">OreTraderImproved</string>
+				<array name="#ForPlayer"><int>4</int><string>User</string></array>
 			</dict>
 		</array>
 	</array>
