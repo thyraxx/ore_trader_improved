@@ -1,4 +1,6 @@
 before_script:
+  - wget https://dot.net/v1/dotnet-install.sh
+  - ./dotnet-install.sh
   - wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.6/depotdownloader-2.3.6.zip
   - unzip -o depotdownloader-2.3.6.zip
 
