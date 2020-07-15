@@ -1,9 +1,9 @@
 before_script:
-  - echo $username
+  - echo test
 
 build1:
   stage: build
   script:
     - wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.6/depotdownloader-2.3.6.zip
-    - unzip depotdownloader-2.3.6.zip
+    - unzip -o depotdownloader-2.3.6.zip
     - ls
