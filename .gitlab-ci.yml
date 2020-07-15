@@ -4,4 +4,6 @@ before_script:
 build1:
   stage: build
   script:
-    - cat prefabs/town/building_oretrader_1.pfb
+    - wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.6/depotdownloader-2.3.6.zip
+    - unzip depotdownloader-2.3.6.zip
+    - ls
