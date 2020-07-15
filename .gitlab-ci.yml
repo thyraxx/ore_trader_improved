@@ -5,5 +5,5 @@ before_script:
 build1:
   stage: build
   script:
-    - depotdownloader -app 677120 -depot 677122 -username $username -password $password
+    - ./depotdownloader -app 677120 -depot 677122 -username $username -password $password
     - ls
