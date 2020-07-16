@@ -1,6 +1,3 @@
-stages:
-  - run_on_windows
-
 before_script:
   - wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.6/depotdownloader-2.3.6.zip
   - unzip -o depotdownloader-2.3.6.zip
@@ -8,5 +5,5 @@ before_script:
 build1:
   stage: build
   script:
-    - powershell .\depotdownloader -app 677120 -depot 677122 -username $username -password $password
+    - ./depotdownloader -app 677120 -depot 677122 -username $STM_USER -password $STM_PASS
     - ls
