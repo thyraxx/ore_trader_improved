@@ -8,10 +8,10 @@ build1:
     - wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.6/depotdownloader-2.3.6.zip
     - unzip -o depotdownloader-2.3.6.zip
     - chmod +x depotdownloader
-    - ./dotnet DepotDownloader.dll -os linux -app 677120 -depot 677122 -username $STM_USER -password $STM_PASS
+    - ./dotnet DepotDownloader.dll -os linux -app 677120 -depot 677124 -username $STM_USER -password $STM_PASS
     - cd depots/677122/4737785/
-    - chmod +x PACKAGER.exe
-    - ./PACKAGER.exe --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
+    - chmod +x PACKAGER
+    - ./PACKAGER --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
     - ls
     - cd ../../../
     - ls
