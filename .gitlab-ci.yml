@@ -3,9 +3,9 @@ build1:
   script:
     - wget https://dot.net/v1/dotnet-install.sh
     - chmod +x dotnet-install.sh
-    - ./dotnet-install.sh --runtime dotnet
+    - ./dotnet-install.sh --runtime dotnet --install-dir ./
     - wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.6/depotdownloader-2.3.6.zip
     - unzip -o depotdownloader-2.3.6.zip
     - chmod +x depotdownloader
-    - /root/.dotnet ./depotdownloader -app 677120 -depot 677122 -username $STM_USER -password $STM_PASS
+    - ./dotnet DepotDownloader.dll -app 677120 -depot 677122 -username $STM_USER -password $STM_PASS
     - ls
