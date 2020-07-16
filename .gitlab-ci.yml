@@ -3,7 +3,7 @@ build1:
   script:
     - dpkg --add-architecture i386
     - apt-get update
-    - apt-get install libglu1
+    - apt-get install -y libglu1
     - cd ..
     - wget https://dot.net/v1/dotnet-install.sh
     - chmod +x dotnet-install.sh
