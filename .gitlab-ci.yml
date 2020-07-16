@@ -1,6 +1,8 @@
 build1:
   stage: build
   script:
+    - dpkg --add-architecture i386
+    - apt-get update
     - apt-get install libglu1
     - cd ..
     - wget https://dot.net/v1/dotnet-install.sh
