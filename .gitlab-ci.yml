@@ -22,7 +22,7 @@ build1:
     - chmod +x depots/677124/4737785/Packager
     - cd steam-runtime
     - ls
-    - ./run.sh depots/677124/4737785/Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin 
+    - ./run.sh ../depots/677124/4737785/Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin 
  #  - cd depots/677124/4737785/
     - ls
     - cd ../
