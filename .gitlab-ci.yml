@@ -1,8 +1,7 @@
 build1:
   stage: build
   script:
-    - mkdir ore_trader_improved
-    - mv * ore_trader_improved
+    - cd ..
     - wget https://dot.net/v1/dotnet-install.sh
     - chmod +x dotnet-install.sh
     - ./dotnet-install.sh --runtime dotnet --install-dir ./
