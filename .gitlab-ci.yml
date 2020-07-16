@@ -1,14 +1,16 @@
 build1:
   stage: build
   script:
-    - dpkg --add-architecture i386
-    - apt-get update
-    - apt-get install -y libglu1
-    - apt-get install -y libgtk2.0-0:i386
-    - wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && dpkg -i /tmp/libpng12.deb && rm /tmp/libpng12.deb
-    - apt-get install libjpeg62:i386
-    - apt-get upgrade -y
+ #   - dpkg --add-architecture i386
+ #   - apt-get update
+ #   - apt-get install -y libglu1
+ #   - apt-get install -y libgtk2.0-0:i386
+ #   - wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && dpkg -i /tmp/libpng12.deb && rm /tmp/libpng12.deb
+ #   - apt-get install libjpeg62:i386
+ #   - apt-get upgrade -y  
     - cd ..
+    - wget https://repo.steampowered.com/steamrt-images-scout/snapshots/0.20190418.0/steam-runtime.tar.xz
+    - tar xf steam-runtime.tar.xz
     - wget https://dot.net/v1/dotnet-install.sh
     - chmod +x dotnet-install.sh
     - ./dotnet-install.sh --runtime dotnet --install-dir ./
@@ -18,7 +20,7 @@ build1:
     - ./dotnet DepotDownloader.dll -os linux -app 677120 -depot 677124 -username $STM_USER -password $STM_PASS
     - cd depots/677124/4737785/
     - chmod +x Packager
-    - ./Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
+    - ./run.sh Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
     - ls
     - cd ../../../
     - ls
