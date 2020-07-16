@@ -10,8 +10,8 @@ build1:
     - chmod +x depotdownloader
     - ./dotnet DepotDownloader.dll -os linux -app 677120 -depot 677124 -username $STM_USER -password $STM_PASS
     - cd depots/677124/4737785/
-    - chmod +x PACKAGER
-    - ./PACKAGER --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
+    - chmod +x Packager
+    - ./Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
     - ls
     - cd ../../../
     - ls
