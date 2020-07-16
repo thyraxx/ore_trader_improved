@@ -11,6 +11,7 @@ build1:
     - cd ..
     - wget https://repo.steampowered.com/steamrt-images-scout/snapshots/0.20190418.0/steam-runtime.tar.xz
     - tar xf steam-runtime.tar.xz
+    - ls
     - wget https://dot.net/v1/dotnet-install.sh
     - chmod +x dotnet-install.sh
     - ./dotnet-install.sh --runtime dotnet --install-dir ./
@@ -20,6 +21,7 @@ build1:
     - ./dotnet DepotDownloader.dll -os linux -app 677120 -depot 677124 -username $STM_USER -password $STM_PASS
     - cd depots/677124/4737785/
     - chmod +x Packager
+    - cd steam-runtime
     - ./run.sh Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin
     - ls
     - cd ../../../
