@@ -28,6 +28,6 @@ build1:
  #   - ls
  #  - cd depots/677124/4737785/
     - cd ../../../
-    - ls
-    - cd ore_trader_improves
+    - ls -lisa
+    - cd ore_trader_improved
     - ls
