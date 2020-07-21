@@ -26,11 +26,10 @@ build1:
  #   - ./run.sh ../depots/677124/4737785/Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin 
  #  - cd depots/677124/4737785/
     - ls
-    - cd ../../
+    -cd ../
     - ls
-    - cd ../../../
+    -cd ../
     - ls
-    - cd ../../../../
+    -cd ../
     - ls
-    - cd ../../../../../
-    - ls
+    -cd ../
