@@ -30,4 +30,7 @@ build1:
     - ls
     - cd ../../../
     - ls
-    - find / -name "ore_trader_improved" -print
+    - cd ../../../../
+    - ls
+    - cd ../../../../../
+    - ls
