@@ -22,7 +22,7 @@ build1:
     - ./dotnet DepotDownloader.dll -os linux -app 677120 -depot 677124 -username $STM_USER -password $STM_PASS
     - cd depots/677124/4737785
     - chmod +x ./Packager 
-    - xvfb-run ../../../steam-runtime/run.sh ./Packager --resources=. --destination=ore_trader_improved.bin
+    - xvfb-run ../../../steam-runtime/run.sh ./Packager --resources=ore_trader_improved --destination=ore_trader_improved.bin
  #   - ./run.sh ../depots/677124/4737785/Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin 
  #  - cd depots/677124/4737785/
     - ls
