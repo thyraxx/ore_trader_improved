@@ -26,5 +26,5 @@ build1:
  #   - xvfb-run ./run.sh ../depots/677124/4737785/Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin 
  #   - ls
  #  - cd depots/677124/4737785/
-    - cd ../../../
+    - cd ../../../ore_trader_improved
     - ls
