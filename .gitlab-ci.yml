@@ -23,9 +23,11 @@ build1:
     - cd depots/677124/4737785
     - chmod +x ./Packager 
     - printf '<dict></dict>' > ../../../ore_trader_improved/resources.xml
- #   - xvfb-run ../../../steam-runtime/run.sh ./Packager --resources=../../../ore_trader_improved
+    - xvfb-run ../../../steam-runtime/run.sh ./Packager --resources=../../../ore_trader_improved
  #   - xvfb-run ./run.sh ../depots/677124/4737785/Packager --resources=../../../ore_trader_improved --destination=ore_trader_improved.bin 
  #   - ls
  #  - cd depots/677124/4737785/
-    - cd ../../../ore_trader_improved
+    - cd ../../../
+    - ls
+    - cd ore_trader_improves
     - ls
