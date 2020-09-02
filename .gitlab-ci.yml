@@ -1,7 +1,0 @@
-before_script:
-  - sudo apt install steamcmd
-
-build1:
-  stage: build
-  script:
-    - cat prefabs/town/building_oretrader_1.pfb
