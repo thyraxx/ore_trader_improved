@@ -20,6 +20,10 @@ class OreTraderImproved : ScriptWidgetHost
 
     int shopLevel;
 
+    //
+    int m_townGold = 0;
+    int m_townOre = 0;
+
     Upgrades::UpgradeShop@ m_shop;
 
     OreTraderImproved(SValue& sval)
@@ -47,6 +51,19 @@ class OreTraderImproved : ScriptWidgetHost
         @m_wOreRight = cast<SpriteButtonWidget>(m_widget.GetWidgetById("ore-right"));
 
         UpdateOre();
+    }
+
+    // Set the values for the correct gamemode
+    void SetTownGoldAndOre()
+    {
+        if(!record.mercenary)
+        {
+            m_townGold = gm.m_townLocal.m_gold;
+            m_townOre = gm.m_townLocal.m_ore;
+        }else{
+            m_townGold = record.mercenaryGold;
+            m_townOre = record.mercenaryOre;
+        }
     }
 
     void GetShopLevel(){
@@ -107,20 +124,12 @@ class OreTraderImproved : ScriptWidgetHost
     {
         auto record = GetLocalPlayerRecord();
         auto gm = cast<Campaign>(g_gameMode);
-        if(!record.mercenary){
-            if(m_wOreButtonChoiceBuy.IsChecked())
-            {
-                return (gm.m_townLocal.m_gold / buyOreCost);
-            }else{
-                return gm.m_townLocal.m_ore;
-            }
+
+        if(m_wOreButtonChoiceBuy.IsChecked())
+        {
+            return (m_townGold / buyOreCost);
         }else{
-            if(m_wOreButtonChoiceBuy.IsChecked())
-            {
-                return (record.mercenaryGold / buyOreCost);
-            }else{
-                return record.mercenaryOre;
-            }
+            return m_townOre;
         }
     }
 
@@ -129,6 +138,7 @@ class OreTraderImproved : ScriptWidgetHost
         m_oreAmount = Ore;
     }
 
+    // TODO: Cleanup and optimize
     void UpdateOre()
     {
         auto record = GetLocalPlayerRecord();
@@ -307,27 +317,14 @@ class OreTraderImproved : ScriptWidgetHost
                 // non merc
                 auto gm = cast<Campaign>(g_gameMode);
                 if(choiceBuy){
-                    if((m_oreAmount * buyOreCost) <= gm.m_townLocal.m_gold){ 
-                        gm.m_townLocal.m_ore += m_oreAmount;
-                        gm.m_townLocal.m_gold -= (m_oreAmount * buyOreCost);
+                    if((m_oreAmount * buyOreCost) <= m_townGold){ 
+                        m_townOre += m_oreAmount;
+                        m_townGold -= (m_oreAmount * buyOreCost);
                     }
                 }else{
-                    if(m_oreAmount <= gm.m_townLocal.m_ore){ 
-                        gm.m_townLocal.m_ore -= m_oreAmount;
-                        gm.m_townLocal.m_gold += (m_oreAmount * sellOreCost);
-                    }
-                }
-            }else{
-                // merc mode
-                if(choiceBuy){
-                    if((m_oreAmount * buyOreCost) <= record.mercenaryGold){ 
-                        record.mercenaryOre += m_oreAmount;
-                        record.mercenaryGold -= (m_oreAmount * buyOreCost);
-                    }
-                }else{
-                    if(m_oreAmount <= record.mercenaryOre){ 
-                        record.mercenaryOre -= m_oreAmount;
-                        record.mercenaryGold += (m_oreAmount * sellOreCost);
+                    if(m_oreAmount <= m_townOre){ 
+                        m_townOre -= m_oreAmount;
+                        m_townGold += (m_oreAmount * sellOreCost);
                     }
                 }
             }
